@@ -36,4 +36,11 @@ public class EmployeeService {
 
         return employeeRepository.save(employee);//валидация бизнес логики - уникальный мэйл и зп больше 5000
     }
+
+    public void deleteEmployee(Long id) {
+        if (!employeeRepository.existsById(id)){
+            throw new IllegalArgumentException("Employee id=s% does not exist");
+        }
+        employeeRepository.deleteById(id);
+    }
 }

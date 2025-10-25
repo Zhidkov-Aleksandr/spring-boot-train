@@ -1,10 +1,7 @@
 package mifi.dev.springboottrain.employees;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,5 +29,22 @@ public Employee createEmployee(@RequestBody Employee employee){  //пост ме
 
     return employeeService.createEmployee(employee);
 
+
 }
+
+//delete localhost:8080/2 для удаления сотрудника с id  2
+@DeleteMapping("/{employeeId}")
+    public void deleteEmployee(
+
+            @PathVariable("employeeId") Long id
+
+)  {
+
+    employeeService.deleteEmployee(id);
+
+
+
+}
+
+
 }
