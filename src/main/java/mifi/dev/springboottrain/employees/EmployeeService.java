@@ -2,6 +2,7 @@ package mifi.dev.springboottrain.employees;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -43,4 +44,30 @@ public class EmployeeService {
         }
         employeeRepository.deleteById(id);
     }
+
+    @Transactional
+    public Employee updateEmployee(
+            Long id,
+            String emil,
+            Integer salary
+
+    ) {
+
+        if (!employeeRepository.existsById(id)){
+            throw new IllegalArgumentException("Employee id=s% does not exist");
+        }
+        Employee employee = employeeRepository.findById(id).orElse(null);
+        if (employee == null){
+            throw new IllegalArgumentException("Employee id=s% does not exist");
+
+        }
+        employee.setEmail(emil);
+        employee.setSalary(salary);
+        return employeeRepository.save(employee);
+
+
+
+
+    }
+
 }

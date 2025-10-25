@@ -46,5 +46,10 @@ public Employee createEmployee(@RequestBody Employee employee){  //пост ме
 
 }
 
+@PutMapping()
+    public Employee updateEmployee(@RequestBody Employee employee){
+    employeeService.updateEmployee( );
+
+}
 
 }
