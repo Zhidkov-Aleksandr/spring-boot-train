@@ -46,7 +46,7 @@ public Employee createEmployee(@RequestBody Employee employee){  //пост ме
 
 }
 
-@PutMapping("/employeeId")
+@PutMapping("/{employeeId}")
     public void updateEmployee(
             @PathVariable("employeeId") Long id,
             @RequestParam(value = "email", required = false) String email,
