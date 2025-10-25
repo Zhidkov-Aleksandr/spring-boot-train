@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -46,28 +47,37 @@ public class EmployeeService {
     }
 
     @Transactional
-    public Employee updateEmployee(
+    public void updateEmployee(
             Long id,
             String emil,
             Integer salary
 
     ) {
-
-        if (!employeeRepository.existsById(id)){
-            throw new IllegalArgumentException("Employee id=s% does not exist");
-        }
-        Employee employee = employeeRepository.findById(id).orElse(null);
+        var employee = employeeRepository.findById(id).orElse(null);
         if (employee == null){
             throw new IllegalArgumentException("Employee id=s% does not exist");
+    }
+       if (emil != null&&!emil.isEmpty()&&emil.equals(employee.getEmail())){
+           Optional<Employee> optionalEmployee = employeeRepository.findByEmail(emil);
+           if (optionalEmployee.isPresent()){
+               throw new IllegalArgumentException("Employee id=s% already exists");
+           }
+           employee.setEmail(emil);
 
-        }
-        employee.setEmail(emil);
-        employee.setSalary(salary);
-        return employeeRepository.save(employee);
 
 
+       }
+       if (salary!=null){
+           if (salary<=5000){
+               throw new IllegalArgumentException("Salary mast be bigger than 5000");
 
+
+           }
+           employee.setSalary(salary);
+
+       }
 
     }
+
 
 }
