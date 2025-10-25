@@ -46,9 +46,14 @@ public Employee createEmployee(@RequestBody Employee employee){  //пост ме
 
 }
 
-@PutMapping()
-    public Employee updateEmployee(@RequestBody Employee employee){
-    employeeService.updateEmployee( );
+@PutMapping("/employeeId")
+    public void updateEmployee(
+            @PathVariable("employeeId") Long id,
+            @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "salary", required = false) Integer salary
+
+){
+    employeeService.updateEmployee(id, email, salary);
 
 }
 
