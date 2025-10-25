@@ -1,23 +1,42 @@
 package mifi.dev.springboottrain.employees;
 
-import java.time.LocalDate;
+import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.time.Period;
+
+@Entity
+@Table(name="employee")
 public class Employee {
 
+    @Id
+    @SequenceGenerator(
+            name="employee_sequence",
+            sequenceName = "employee_sequence",
+            allocationSize=1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE, //стратегия того, как будем генерировать ID
+            generator = "employee_sequence"
+    )
     private Long ID;
     private String name;
     private String email;
     private LocalDate birthData;
+    @Transient  //чтобы не сохранять поле в базу, а вычислять возраст отдельно, не будет создаваться отдельная колонка
     private Integer age;
     private Integer salary;
 
+    public Employee() {
 
-    public Employee(Long ID, String name, String email, LocalDate birthData, Integer age, Integer salary) {
+    }  //пустой конструктор нужен для Хайбернейта
+
+    public Employee(Long ID, String name, String email, LocalDate birthData, Integer salary) {
         this.ID = ID;
         this.name = name;
         this.email = email;
         this.birthData = birthData;
-        this.age = age;
+        this.age = Period.between(birthData, LocalDate.now()).getYears();  // - чтобы не отправлять в базу
         this.salary = salary;
     }
 
@@ -54,6 +73,8 @@ public class Employee {
     }
 
     public Integer getAge() {
+        if  (age==null)
+            this.age = Period.between(birthData, LocalDate.now()).getYears();
         return age;
     }
 
